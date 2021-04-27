@@ -10,7 +10,7 @@ async function main() {
       value = JSON.parse(value);
     }
 
-    let root = require(file);
+    let obj = require(file);
 
     const segments = field.split(".");
     const finalSegmentIndex = segments.length - 1;
