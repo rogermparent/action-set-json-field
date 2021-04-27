@@ -21,7 +21,7 @@ async function main() {
       obj = obj[part];
     });
     const originalValue = obj[finalSegment];
-    obj[finalSegment] = value.replace(/${{ *originalValue *}}/, originalValue);
+    obj[finalSegment] = value.replace(/{{ *originalValue *}}/, originalValue);
 
     fs.writeFileSync(file, JSON.stringify(root, null, 2), "utf8");
   } catch (error) {
