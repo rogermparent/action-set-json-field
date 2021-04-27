@@ -21,9 +21,10 @@ async function modifyFieldAction() {
       obj = obj[part];
     });
     const originalValue = obj[finalSegment];
-    obj[finalSegment] = value.replace(/{{ *original *}}/, originalValue);
+    const replacementValue = value.replace(/{{ *original *}}/, originalValue);
+    obj[finalSegment] = replacementValue;
 
-    fs.writeFileSync(file, JSON.stringify(root, null, 2), "utf8");
+    fs.writeFileSync(file, JSON.stringify(obj, null, 2), "utf8");
   } catch (error) {
     core.setFailed(error.message);
     throw error;
