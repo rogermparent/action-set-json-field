@@ -34,7 +34,7 @@ module.exports =
 /******/ 	// the startup function
 /******/ 	function startup() {
 /******/ 		// Load entry module and return exports
-/******/ 		return __webpack_require__(31);
+/******/ 		return __webpack_require__(362);
 /******/ 	};
 /******/ 	// initialize runtime
 /******/ 	runtime(__webpack_require__);
@@ -44,23 +44,6 @@ module.exports =
 /******/ })
 /************************************************************************/
 /******/ ({
-
-/***/ 31:
-/***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
-
-const modifyFieldAction = __webpack_require__(928);
-
-if (require.main === require.cache[eval('__filename')]) {
-  modifyFieldAction()
-    .then(() => process.exit(0))
-    .catch((e) => {
-      console.error(e);
-      process.exit(1);
-    });
-}
-
-
-/***/ }),
 
 /***/ 82:
 /***/ (function(__unusedmodule, exports) {
@@ -128,6 +111,63 @@ function issueCommand(command, message) {
 }
 exports.issueCommand = issueCommand;
 //# sourceMappingURL=file-command.js.map
+
+/***/ }),
+
+/***/ 362:
+/***/ (function(__unusedmodule, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+// EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
+var core = __webpack_require__(470);
+var core_default = /*#__PURE__*/__webpack_require__.n(core);
+
+// EXTERNAL MODULE: external "fs"
+var external_fs_ = __webpack_require__(747);
+var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_);
+
+// CONCATENATED MODULE: ./src/action.js
+
+
+
+async function modifyFieldAction() {
+  try {
+    let file = core_default().getInput("file", { required: true });
+    let field = core_default().getInput("field", { required: true });
+    let value = core_default().getInput("value", { required: true });
+    if (core_default().getInput("parse_json", { required: false })) {
+      value = JSON.parse(value);
+    }
+
+    const obj = JSON.parse(external_fs_default().readFileSync(value));
+
+    const segments = field.split(".");
+    const finalSegmentIndex = segments.length - 1;
+    const parentSegments = segments.slice(0, finalSegmentIndex);
+    const finalSegment = segments[finalSegmentIndex];
+    parentSegments.forEach((part) => {
+      obj[part] = obj[part] || {};
+      obj = obj[part];
+    });
+    const originalValue = obj[finalSegment];
+    const replacementValue = value.replace(/{{ *original *}}/, originalValue);
+    obj[finalSegment] = replacementValue;
+
+    external_fs_default().writeFileSync(file, JSON.stringify(obj, null, 2), "utf8");
+  } catch (error) {
+    core_default().setFailed(error.message);
+    throw error;
+  }
+}
+
+/* harmony default export */ var action = (modifyFieldAction);
+
+// CONCATENATED MODULE: ./src/main.js
+
+action();
+
 
 /***/ }),
 
@@ -475,49 +515,6 @@ module.exports = require("path");
 
 module.exports = require("fs");
 
-/***/ }),
-
-/***/ 928:
-/***/ (function(__unusedmodule, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-const core = __webpack_require__(470);
-const fs = __webpack_require__(747);
-
-async function modifyFieldAction() {
-  try {
-    let file = core.getInput("file", { required: true });
-    let field = core.getInput("field", { required: true });
-    let value = core.getInput("value", { required: true });
-    if (core.getInput("parse_json", { required: false })) {
-      value = JSON.parse(value);
-    }
-
-    const obj = JSON.parse(fs.readFileSync(value));
-
-    const segments = field.split(".");
-    const finalSegmentIndex = segments.length - 1;
-    const parentSegments = segments.slice(0, finalSegmentIndex);
-    const finalSegment = segments[finalSegmentIndex];
-    parentSegments.forEach((part) => {
-      obj[part] = obj[part] || {};
-      obj = obj[part];
-    });
-    const originalValue = obj[finalSegment];
-    const replacementValue = value.replace(/{{ *original *}}/, originalValue);
-    obj[finalSegment] = replacementValue;
-
-    fs.writeFileSync(file, JSON.stringify(obj, null, 2), "utf8");
-  } catch (error) {
-    core.setFailed(error.message);
-    throw error;
-  }
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (modifyFieldAction);
-
-
 /***/ })
 
 /******/ },
@@ -532,6 +529,48 @@ async function modifyFieldAction() {
 /******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getter */
+/******/ 	!function() {
+/******/ 		// define getter function for harmony exports
+/******/ 		var hasOwnProperty = Object.prototype.hasOwnProperty;
+/******/ 		__webpack_require__.d = function(exports, name, getter) {
+/******/ 			if(!hasOwnProperty.call(exports, name)) {
+/******/ 				Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 			}
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/create fake namespace object */
+/******/ 	!function() {
+/******/ 		// create a fake namespace object
+/******/ 		// mode & 1: value is a module id, require it
+/******/ 		// mode & 2: merge all properties of value into the ns
+/******/ 		// mode & 4: return value when already ns object
+/******/ 		// mode & 8|1: behave like require
+/******/ 		__webpack_require__.t = function(value, mode) {
+/******/ 			if(mode & 1) value = this(value);
+/******/ 			if(mode & 8) return value;
+/******/ 			if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 			var ns = Object.create(null);
+/******/ 			__webpack_require__.r(ns);
+/******/ 			Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 			if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 			return ns;
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	!function() {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = function(module) {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				function getDefault() { return module['default']; } :
+/******/ 				function getModuleExports() { return module; };
+/******/ 			__webpack_require__.d(getter, 'a', getter);
+/******/ 			return getter;
 /******/ 		};
 /******/ 	}();
 /******/ 	
