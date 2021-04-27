@@ -10,9 +10,7 @@ async function modifyFieldAction() {
       value = JSON.parse(value);
     }
 
-    let obj = {
-      ...require(path.resolve(file)),
-    };
+    let obj = require(file);
 
     const segments = field.split(".");
     const finalSegmentIndex = segments.length - 1;
@@ -23,7 +21,7 @@ async function modifyFieldAction() {
       obj = obj[part];
     });
     const originalValue = obj[finalSegment];
-    const replacementValue = `${originalValue}-${value}`;
+    const replacementValue = value.replace(/{{ *original *}}/, originalValue);
     obj[finalSegment] = replacementValue;
 
     fs.writeFileSync(file, JSON.stringify(obj, null, 2), "utf8");
