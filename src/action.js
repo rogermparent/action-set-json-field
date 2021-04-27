@@ -3,28 +3,29 @@ import fs from "fs";
 
 async function modifyFieldAction() {
   try {
-    let file = core.getInput("file", { required: true });
-    let field = core.getInput("field", { required: true });
+    const file = core.getInput("file", { required: true });
+    const field = core.getInput("field", { required: true });
     let value = core.getInput("value", { required: true });
     if (core.getInput("parse_json", { required: false })) {
       value = JSON.parse(value);
     }
 
-    const obj = JSON.parse(fs.readFileSync(value));
+    const fullObject = JSON.parse(fs.readFileSync(file));
+    let currentlySelectedObject = fullObject;
 
     const segments = field.split(".");
     const finalSegmentIndex = segments.length - 1;
     const parentSegments = segments.slice(0, finalSegmentIndex);
     const finalSegment = segments[finalSegmentIndex];
     parentSegments.forEach((part) => {
-      obj[part] = obj[part] || {};
-      obj = obj[part];
+      currentlySelectedObject[part] = currentlySelectedObject[part] || {};
+      currentlySelectedObject = currentlySelectedObject[part];
     });
-    const originalValue = obj[finalSegment];
+    const originalValue = currentlySelectedObject[finalSegment];
     const replacementValue = value.replace(/{{ *original *}}/, originalValue);
-    obj[finalSegment] = replacementValue;
+    currentlySelectedObject[finalSegment] = replacementValue;
 
-    fs.writeFileSync(file, JSON.stringify(obj, null, 2), "utf8");
+    fs.writeFileSync(file, JSON.stringify(fullObject, null, 2), "utf8");
   } catch (error) {
     core.setFailed(error.message);
     throw error;
