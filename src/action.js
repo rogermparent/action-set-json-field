@@ -1,5 +1,5 @@
-const core = require("@actions/core");
-const fs = require("fs");
+import core from "@actions/core";
+import fs from "fs";
 
 async function modifyFieldAction() {
   try {
