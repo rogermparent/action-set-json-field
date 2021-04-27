@@ -134,28 +134,29 @@ var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_);
 
 async function modifyFieldAction() {
   try {
-    let file = core_default().getInput("file", { required: true });
-    let field = core_default().getInput("field", { required: true });
+    const file = core_default().getInput("file", { required: true });
+    const field = core_default().getInput("field", { required: true });
     let value = core_default().getInput("value", { required: true });
     if (core_default().getInput("parse_json", { required: false })) {
       value = JSON.parse(value);
     }
 
-    const obj = JSON.parse(external_fs_default().readFileSync(value));
+    const fullObject = JSON.parse(external_fs_default().readFileSync(file));
+    let currentlySelectedObject = fullObject;
 
     const segments = field.split(".");
     const finalSegmentIndex = segments.length - 1;
     const parentSegments = segments.slice(0, finalSegmentIndex);
     const finalSegment = segments[finalSegmentIndex];
     parentSegments.forEach((part) => {
-      obj[part] = obj[part] || {};
-      obj = obj[part];
+      currentlySelectedObject[part] = currentlySelectedObject[part] || {};
+      currentlySelectedObject = currentlySelectedObject[part];
     });
-    const originalValue = obj[finalSegment];
+    const originalValue = currentlySelectedObject[finalSegment];
     const replacementValue = value.replace(/{{ *original *}}/, originalValue);
-    obj[finalSegment] = replacementValue;
+    currentlySelectedObject[finalSegment] = replacementValue;
 
-    external_fs_default().writeFileSync(file, JSON.stringify(obj, null, 2), "utf8");
+    external_fs_default().writeFileSync(file, JSON.stringify(fullObject, null, 2), "utf8");
   } catch (error) {
     core_default().setFailed(error.message);
     throw error;
