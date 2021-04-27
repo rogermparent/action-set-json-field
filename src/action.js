@@ -10,7 +10,7 @@ async function modifyFieldAction() {
       value = JSON.parse(value);
     }
 
-    let obj = require(file);
+    const obj = JSON.parse(fs.readFileSync(value));
 
     const segments = field.split(".");
     const finalSegmentIndex = segments.length - 1;
