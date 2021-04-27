@@ -517,7 +517,7 @@ async function modifyField(file, field, value) {
   const replacementValue = value.replace(/{{ *original *}}/, originalValue);
   currentlySelectedObject[finalSegment] = replacementValue;
 
-  external_fs_default().writeFileSync(file, JSON.stringify(fullObject, null, 2), "utf8");
+  external_fs_default().writeFileSync(file, JSON.stringify(fullObject, null, 2) + "\n", "utf8");
 }
 
 /* harmony default export */ const action = (modifyField);

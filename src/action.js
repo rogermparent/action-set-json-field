@@ -16,7 +16,7 @@ async function modifyField(file, field, value) {
   const replacementValue = value.replace(/{{ *original *}}/, originalValue);
   currentlySelectedObject[finalSegment] = replacementValue;
 
-  fs.writeFileSync(file, JSON.stringify(fullObject, null, 2), "utf8");
+  fs.writeFileSync(file, JSON.stringify(fullObject, null, 2) + "\n", "utf8");
 }
 
 export default modifyField;
