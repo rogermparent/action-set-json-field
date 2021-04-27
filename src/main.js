@@ -1,11 +1,11 @@
 import modifyFileField from "./action";
-import core from "@actions/core";
+import { getInput, setFailed } from "@actions/core";
 
 async function main() {
-  const file = core.getInput("file", { required: true });
-  const field = core.getInput("field", { required: true });
-  let value = core.getInput("value", { required: true });
-  if (core.getInput("parse_json", { required: false })) {
+  const file = getInput("file", { required: true });
+  const field = getInput("field", { required: true });
+  let value = getInput("value", { required: true });
+  if (getInput("parse_json", { required: false })) {
     value = JSON.parse(value);
   }
 
@@ -13,6 +13,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  core.setFailed(error.message);
+  setFailed(error.message);
   throw error;
 });

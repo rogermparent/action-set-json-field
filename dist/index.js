@@ -524,16 +524,15 @@ async function modifyField(file, field, value) {
 
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(186);
-var core_default = /*#__PURE__*/__nccwpck_require__.n(core);
 ;// CONCATENATED MODULE: ./src/main.js
 
 
 
 async function main() {
-  const file = core_default().getInput("file", { required: true });
-  const field = core_default().getInput("field", { required: true });
-  let value = core_default().getInput("value", { required: true });
-  if (core_default().getInput("parse_json", { required: false })) {
+  const file = (0,core.getInput)("file", { required: true });
+  const field = (0,core.getInput)("field", { required: true });
+  let value = (0,core.getInput)("value", { required: true });
+  if ((0,core.getInput)("parse_json", { required: false })) {
     value = JSON.parse(value);
   }
 
@@ -541,7 +540,7 @@ async function main() {
 }
 
 main().catch((error) => {
-  core_default().setFailed(error.message);
+  (0,core.setFailed)(error.message);
   throw error;
 });
 
