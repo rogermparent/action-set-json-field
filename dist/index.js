@@ -477,25 +477,6 @@ module.exports = require("fs");
 
 /***/ }),
 
-/***/ 875:
-/***/ (function(module) {
-
-function webpackEmptyContext(req) {
-	if (typeof req === 'number' && __webpack_require__.m[req])
-  return __webpack_require__(req);
-try { return require(req) }
-catch (e) { if (e.code !== 'MODULE_NOT_FOUND') throw e }
-var e = new Error("Cannot find module '" + req + "'");
-	e.code = 'MODULE_NOT_FOUND';
-	throw e;
-}
-webpackEmptyContext.keys = function() { return []; };
-webpackEmptyContext.resolve = webpackEmptyContext;
-module.exports = webpackEmptyContext;
-webpackEmptyContext.id = 875;
-
-/***/ }),
-
 /***/ 928:
 /***/ (function(__unusedmodule, __webpack_exports__, __webpack_require__) {
 
@@ -513,7 +494,7 @@ async function modifyFieldAction() {
       value = JSON.parse(value);
     }
 
-    let obj = __webpack_require__(875)(file);
+    const obj = JSON.parse(fs.readFileSync(value));
 
     const segments = field.split(".");
     const finalSegmentIndex = segments.length - 1;
